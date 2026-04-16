@@ -1,11 +1,13 @@
 from pathlib import Path
 
 from langchain_core.documents import Document
-
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 class DocumentService:
     def load(self, file_path: str) -> list[Document]:
-        pass
+        loader = PyPDFLoader(file_path)
+        return loader.load()
 
     def split(
         self,
@@ -14,7 +16,11 @@ class DocumentService:
         chunk_size: int = 1000,
         chunk_overlap: int = 200,
     ) -> list[Document]:
-        pass
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+        )
+        return splitter.split_documents(documents)
 
 
 if __name__ == "__main__":
